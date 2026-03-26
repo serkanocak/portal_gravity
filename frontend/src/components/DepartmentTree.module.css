@@ -1,0 +1,53 @@
+.treeContainer {
+  font-family: inherit;
+  color: #f1f5f9;
+}
+
+.treeNode {
+  margin-bottom: 2px;
+}
+
+.nodeContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+.folderIcon {
+  color: #38bdf8;
+}
+
+.itemIcon {
+  color: #cbd5e1;
+}
+
+.nodeLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.children {
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+}

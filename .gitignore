@@ -1,0 +1,124 @@
+# ============================================================
+# Multi-Tenant SaaS Platform — .gitignore
+# Stack: .NET 8 · React + Vite · PostgreSQL · Redis
+# ============================================================
+
+# ───────────────────────────────────────────────
+# .NET / C#
+# ───────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+*.rsuser
+*.DotSettings.user
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!**/packages/repositories.config
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# ASP.NET
+wwwroot/dist/
+
+# Entity Framework
+*.mdf
+*.ldf
+*.ndf
+Migrations/*.Designer.cs
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# ───────────────────────────────────────────────
+# Node.js / React / Vite
+# ───────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+.cache/
+.parcel-cache/
+.vite/
+
+# npm / yarn / pnpm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+package-lock.json.bak
+
+# TypeScript
+*.tsbuildinfo
+
+# ───────────────────────────────────────────────
+# Environment & Secrets
+# ───────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+appsettings.Production.json
+appsettings.Staging.json
+secrets.json
+**/secrets/**
+
+# ───────────────────────────────────────────────
+# Docker
+# ───────────────────────────────────────────────
+docker-compose.override.yml
+
+# ───────────────────────────────────────────────
+# Logs & Temp
+# ───────────────────────────────────────────────
+*.log
+logs/
+tmp/
+temp/
+.tmp/
+coverage/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# ───────────────────────────────────────────────
+# OS
+# ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ───────────────────────────────────────────────
+# Editors
+# ───────────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~

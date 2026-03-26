@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.0" />
+    <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+    <PackageReference Include="FluentMigrator.Runner" Version="5.2.0" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="5.2.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\HelpGuide\PortalGravity.Module.HelpGuide\PortalGravity.Module.HelpGuide.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\PortalGravity.Module.Identity\PortalGravity.Module.Identity.csproj" />
+    <ProjectReference Include="..\..\Modules\RBAC\PortalGravity.Module.RBAC\PortalGravity.Module.RBAC.csproj" />
+    <ProjectReference Include="..\..\Modules\Organization\PortalGravity.Module.Organization\PortalGravity.Module.Organization.csproj" />
+    <ProjectReference Include="..\..\Modules\Localization\PortalGravity.Module.Localization\PortalGravity.Module.Localization.csproj" />
+    <ProjectReference Include="..\..\Modules\Audit\PortalGravity.Module.Audit\PortalGravity.Module.Audit.csproj" />
+  </ItemGroup>
+
+</Project>
