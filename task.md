@@ -127,11 +127,11 @@
 - [x] **Frontend:** Contextual help popup component'i (`useHelpGuide(slug)` hook)
 
 ### 1.7 Faz 1 Testleri
-- [ ] `PermissionResolver` unit testleri (her hiyerarşi seviyesi için ayrı senaryo)
-- [ ] Impersonation entegrasyon testi (yetki sınırları)
-- [ ] Audit log partition varlığını doğrulayan migration testi
-- [ ] Redis cache hit/miss lokalizasyon testleri
-- [ ] Tenant izolasyon regression testleri (tüm yeni tablolar dahil)
+- [x] `PermissionResolver` unit testleri (her hiyerarşi seviyesi için ayrı senaryo)
+- [x] Impersonation entegrasyon testi (yetki sınırları)
+- [x] Audit log partition varlığını doğrulayan migration testi
+- [x] Redis cache hit/miss lokalizasyon testleri
+- [x] Tenant izolasyon regression testleri (tüm yeni tablolar dahil)
 
 ---
 
