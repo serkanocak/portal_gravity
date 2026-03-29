@@ -11,7 +11,7 @@ public static class AuditEndpoints
 {
     public static async Task<IResult> GetLogs(
         [FromServices] AppDbContext db,
-        [FromServices] ICurrentUser currentUser,
+        [FromServices] ITenantContext tenantContext,
         [FromQuery] Guid? userId,
         [FromQuery] string? action,
         [FromQuery] string? result,
@@ -19,8 +19,10 @@ public static class AuditEndpoints
         [FromQuery] int take = 50,
         CancellationToken ct = default)
     {
+        if (tenantContext.Current == null) return Results.BadRequest("Tenant context not found.");
+        
         var query = db.Set<AuditLogEntity>().AsNoTracking()
-            .Where(a => a.TenantId == currentUser.TenantId);
+            .Where(a => a.TenantId == tenantContext.Current.Id);
 
         if (userId.HasValue)
             query = query.Where(a => a.UserId == userId.Value);

@@ -76,14 +76,18 @@ public static class OrgEndpoints
 
     public record InviteUserReq(string Email, Guid? CompanyId, Guid? DepartmentId);
 
-    public static async Task<IResult> InviteUser([FromBody] InviteUserReq req, [FromServices] AppDbContext db, [FromServices] ICurrentUser currentUser, CancellationToken ct)
+    public static async Task<IResult> InviteUser([FromBody] InviteUserReq req, [FromServices] AppDbContext db, [FromServices] ITenantContext tenantContext, CancellationToken ct)
     {
-        var existing = await db.Users.AnyAsync(u => u.TenantId == currentUser.TenantId && u.Email == req.Email, ct);
-        if (existing) return Results.BadRequest("Kullanıcı zaten bu tenant'ta davetli.");
+        if (tenantContext.Current == null) return Results.BadRequest("Tenant context not found.");
+        
+        // 1. Check if user already exists
+        var exists = await db.Users.AnyAsync(u => u.TenantId == tenantContext.Current.Id && u.Email == req.Email, ct);
+        if (exists) return Results.BadRequest("Kullanıcı zaten mevcut.");
 
         var user = new UserEntity
         {
-            TenantId = currentUser.TenantId,
+            Id = Guid.NewGuid(),
+            TenantId = tenantContext.Current.Id,
             Email = req.Email,
             CompanyId = req.CompanyId,
             DepartmentId = req.DepartmentId,
@@ -93,6 +97,19 @@ public static class OrgEndpoints
         };
 
         db.Users.Add(user);
+        
+        // Audit log
+        db.Set<AuditLogEntity>().Add(new AuditLogEntity
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantContext.Current.Id,
+            Action = "User Invited",
+            Resource = "Organization",
+            Result = "Success",
+            Metadata = $"{{\"email\":\"{req.Email}\"}}",
+            CreatedAt = DateTimeOffset.UtcNow
+        });
+        
         await db.SaveChangesAsync(ct);
         return Results.Ok(new { message = "Kullanıcı başarıyla oluşturuldu.", userId = user.Id });
     }

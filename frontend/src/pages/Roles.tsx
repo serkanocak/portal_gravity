@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from '../shared/hooks/useTranslation';
 import { apiClient } from '../shared/api/apiClient';
-import { Shield, Plus, Edit, Trash2 } from 'lucide-react';
+import { Shield, Edit, Trash2 } from 'lucide-react';
 import styles from './Roles.module.css';
 
 interface Role {
@@ -22,7 +22,7 @@ export const Roles: React.FC = () => {
   const fetchRoles = async () => {
     try {
       setIsLoading(true);
-      const { data } = await apiClient.get<Role[]>('/api/roles');
+      const { data } = await apiClient.get<Role[]>('/api/rbac/roles');
       setRoles(data);
     } catch (err) {
       console.error(err);
@@ -41,10 +41,28 @@ export const Roles: React.FC = () => {
             <p>{t('roles.subtitle', 'Manage roles and assign permissions')}</p>
           </div>
         </div>
-        <button className={styles.primaryBtn}>
-          <Plus size={18} />
-          {t('roles.create', 'Create Role')}
-        </button>
+        <div className={styles.quickAdd}>
+          <input 
+            id="role-name-input"
+            type="text" 
+            placeholder="Role Name" 
+            className={styles.input} 
+            onKeyDown={async (e) => {
+              if (e.key === 'Enter') {
+                const name = (e.target as HTMLInputElement).value;
+                if (!name) return;
+                try {
+                  await apiClient.post('/api/rbac/roles', { name, description: 'Quick added role' });
+                  (e.target as HTMLInputElement).value = '';
+                  fetchRoles();
+                } catch (err: any) {
+                  alert(err.response?.data || 'Error creating role');
+                }
+              }
+            }}
+          />
+          <p className={styles.hint}>Press Enter to quick add</p>
+        </div>
       </header>
 
       <div className={styles.content}>

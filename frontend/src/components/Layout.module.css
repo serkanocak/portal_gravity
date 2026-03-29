@@ -33,7 +33,8 @@
 }
 
 .brandIcon {
-  color: #6366f1;
+  color: #8b5cf6;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
 }
 
 .nav {
@@ -76,8 +77,10 @@
 }
 
 .navLink.active {
-  background: rgba(99, 102, 241, 0.1);
-  color: #818cf8;
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  border-left: 3px solid #8b5cf6;
+  border-radius: 4px 12px 12px 4px;
 }
 
 .contentArea {
@@ -102,6 +105,46 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.workspaceBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.workspaceBadge:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.badgeLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badgeValue {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: #e2e8f0;
+}
+
+.copyIcon {
+  color: #64748b;
+  transition: color 0.2s;
+}
+
+.workspaceBadge:hover .copyIcon {
+  color: #8b5cf6;
 }
 
 .pageTitle {
@@ -130,13 +173,15 @@
 .avatar {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 0.875rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
 }
 
 .userInfo {

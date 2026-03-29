@@ -24,8 +24,10 @@ export const AuditLogs: React.FC = () => {
   const fetchLogs = async () => {
     setIsLoading(true);
     try {
-      const { data } = await apiClient.get<AuditLog[]>('/api/audit-logs');
-      setLogs(data);
+      const response = await apiClient.get<any>('/api/audit/logs');
+      // The API returns { data: AuditLogEntity[], total: number }
+      // Axios puts the body in response.data
+      setLogs(response.data.data || []);
     } catch (err) {
       console.error(err);
     } finally {

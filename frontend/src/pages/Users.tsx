@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Users as UsersIcon, UserPlus, Filter, MoreHorizontal, CheckCircle, XCircle } from 'lucide-react';
+import { Users as UsersIcon, MoreHorizontal, CheckCircle, XCircle } from 'lucide-react';
 import { apiClient } from '../shared/api/apiClient';
 import styles from './Users.module.css';
 
 interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   isActive: boolean;
   departmentId?: string;
   departmentName?: string;
-  roles: string[];
+  roles?: string[];
 }
 
 export const Users: React.FC = () => {
@@ -26,7 +26,7 @@ export const Users: React.FC = () => {
     setIsLoading(true);
     try {
       // Mocked endpoint per Phase 1 specs
-      const { data } = await apiClient.get<User[]>('/api/users');
+      const { data } = await apiClient.get<User[]>('/api/org/users');
       setUsers(data);
     } catch (err) {
       console.error(err);
@@ -46,12 +46,27 @@ export const Users: React.FC = () => {
           </div>
         </div>
         <div className={styles.actions}>
-          <button className={styles.secondaryBtn}>
-            <Filter size={16} /> Filters
-          </button>
-          <button className={styles.primaryBtn}>
-            <UserPlus size={16} /> Invite User
-          </button>
+          <div className={styles.quickInvite}>
+            <input 
+              id="user-email-input"
+              type="email" 
+              placeholder="Invite by Email..." 
+              className={styles.input} 
+              onKeyDown={async (e) => {
+                if (e.key === 'Enter') {
+                  const email = (e.target as HTMLInputElement).value;
+                  if (!email) return;
+                  try {
+                    await apiClient.post('/api/org/users/invite', { email });
+                    (e.target as HTMLInputElement).value = '';
+                    fetchUsers();
+                  } catch (err: any) {
+                    alert(err.response?.data || 'Error inviting user');
+                  }
+                }
+              }}
+            />
+          </div>
         </div>
       </header>
 
@@ -80,7 +95,7 @@ export const Users: React.FC = () => {
                     <td>
                       <div className={styles.userInfo}>
                         <div className={styles.avatar}>
-                          {user.firstName[0]}{user.lastName[0]}
+                          {user.email[0].toUpperCase()}
                         </div>
                         <div>
                           <div className={styles.fw600}>{user.firstName} {user.lastName}</div>
@@ -106,7 +121,7 @@ export const Users: React.FC = () => {
                     </td>
                     <td>
                       <div className={styles.roleList}>
-                        {user.roles.map(r => (
+                        {user.roles?.map(r => (
                           <span key={r} className={styles.roleBadge}>{r}</span>
                         ))}
                       </div>

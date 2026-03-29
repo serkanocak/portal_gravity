@@ -36,8 +36,17 @@ public static class DbSeeder
 
             await db.SaveChangesAsync();
 
-            // 3. Provision the Tenant Schema
-            await db.Database.ExecuteSqlRawAsync($"CREATE SCHEMA IF NOT EXISTS {mainTenant.SchemaName};");
+            // 3. Provision the Tenant Schema (Tables roles, companies, etc.)
+            await db.Database.ExecuteSqlRawAsync($"SELECT provision_tenant_schema('{mainTenant.SchemaName}');");
+        }
+        else
+        {
+            // Ensure main tenant schema is updated if it exists
+            var mainTenant = await db.Tenants.FirstOrDefaultAsync(t => t.Slug == "main");
+            if (mainTenant != null)
+            {
+               await db.Database.ExecuteSqlRawAsync($"SELECT provision_tenant_schema('{mainTenant.SchemaName}');");
+            }
         }
 
         // 4. Seed i18n translations (always check independently)

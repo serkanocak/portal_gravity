@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { Shield, Users, Activity, LogOut, Hexagon } from 'lucide-react';
+import { Shield, Users, Activity, LogOut, Hexagon, Copy, Check } from 'lucide-react';
 import { ImpersonationBanner } from './ImpersonationBanner';
 import { LanguageSelector } from './LanguageSelector';
 import { HelpPopup } from './HelpPopup';
@@ -10,9 +10,19 @@ import styles from './Layout.module.css';
 export const Layout: React.FC = () => {
   const { user, logout } = useAuthStore();
 
+  const [copied, setCopied] = React.useState(false);
+
   const handleLogout = () => {
     logout();
     window.location.href = '/';
+  };
+
+  const copyId = () => {
+    if (user?.tenantId) {
+      navigator.clipboard.writeText(user.tenantId);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const hasRole = (role: string) => user?.roles?.includes(role) || user?.roles?.includes('Admin');
@@ -61,7 +71,11 @@ export const Layout: React.FC = () => {
           {/* Header */}
           <header className={styles.header}>
             <div className={styles.headerLeft}>
-              <h2 className={styles.pageTitle}>Workspace: {user?.tenantId}</h2>
+              <div className={styles.workspaceBadge} onClick={copyId} title="Click to copy Workspace ID">
+                <span className={styles.badgeLabel}>Workspace:</span>
+                <span className={styles.badgeValue}>{user?.tenantId?.substring(0, 8)}...</span>
+                {copied ? <Check size={14} className={styles.copyIcon} /> : <Copy size={14} className={styles.copyIcon} />}
+              </div>
               <HelpPopup slug="global-dashboard" />
             </div>
             

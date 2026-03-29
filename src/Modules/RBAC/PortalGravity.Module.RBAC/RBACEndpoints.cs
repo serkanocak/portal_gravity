@@ -16,13 +16,34 @@ public static class RBACEndpoints
 
     public record CreateRoleReq(string Name, string Description);
 
-    public static async Task<IResult> CreateRole([FromBody] CreateRoleReq req, [FromServices] AppDbContext db, CancellationToken ct)
+    public static async Task<IResult> CreateRole([FromBody] CreateRoleReq req, [FromServices] AppDbContext db, [FromServices] ITenantContext tenantContext, CancellationToken ct)
     {
+        if (tenantContext.Current == null) return Results.BadRequest("Tenant context not found.");
+        
         var exists = await db.Set<RoleEntity>().AnyAsync(r => r.Name == req.Name, ct);
         if (exists) return Results.BadRequest("Rol zaten mevcut.");
 
-        var role = new RoleEntity { Name = req.Name, Description = req.Description };
+        var role = new RoleEntity 
+        { 
+            Id = Guid.NewGuid(),
+            TenantId = tenantContext.Current.Id,
+            Name = req.Name, 
+            Description = req.Description 
+        };
         db.Set<RoleEntity>().Add(role);
+        
+        // Audit log (direct to db for now)
+        db.Set<AuditLogEntity>().Add(new AuditLogEntity
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantContext.Current.Id,
+            Action = "Role Created",
+            Resource = "RBAC",
+            Result = "Success",
+            Metadata = $"{{\"roleName\":\"{req.Name}\"}}",
+            CreatedAt = DateTimeOffset.UtcNow
+        });
+        
         await db.SaveChangesAsync(ct);
         
         return Results.Created($"/api/rbac/roles/{role.Id}", role);
